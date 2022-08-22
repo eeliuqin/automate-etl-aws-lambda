@@ -132,3 +132,6 @@ def lambda_handler(event, context):
     df_videos = extract_data()
     df_videos_clean = transform_data(df_videos)
     load_data(df_videos_clean)
+
+if __name__ == "__main__":
+    lambda_handler(None, None)
