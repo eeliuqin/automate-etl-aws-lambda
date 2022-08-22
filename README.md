@@ -4,8 +4,8 @@
 - **Transform**: cleaning and formatting data from the API’s JSON responses to Pandas Dataframes.
 - **Load**: writing the data into AWS RDS MySQL instance.
 
+## AWS Lambda 
+
 Automate AWS Lambda function to run it every day to get updated data.
 
-## AWS Lambda Layers
-
-Found list of ARNs in [Layers for Python 3.9](https://github.com/keithrozario/Klayers/tree/master/deployments/python3.9)
+The Lambda function layers (Pandas, Numpy, Requests, SQLAlchemy, and PyMySQL) are from [Layers for Python 3.9](https://github.com/keithrozario/Klayers/tree/master/deployments/python3.9).
