@@ -25,8 +25,8 @@ def extract_data():
     """
     querystring = {"type":"n","hl":"en","gl":"US"}
     url = "https://youtube-search-and-download.p.rapidapi.com/trending"
-    # get rapid api key from Environment variables
     headers = {
+        # get rapid api key from Environment variables
         "X-RapidAPI-Key": os.environ["rapid_api_key"],
         "X-RapidAPI-Host": "youtube-search-and-download.p.rapidapi.com"
     }
@@ -79,12 +79,16 @@ def transform_data(data):
     data = data.rename_axis('rank').reset_index()
     # add column of extracted at
     data["extracted_at"] = datetime.now()
-    # convert text to other formats
-    data["length_minutes"] = data["lengthText"].apply(get_length_minutes)
-    data["published_time"] = data["publishedTimeText"].apply(get_published_time)
-    data["views_millions"] = data["viewCountText"].apply(get_views_count)
-    # remove unneeded columns
-    data.drop(columns=["lengthText", "publishedTimeText", "viewCountText"], inplace=True)
+    # convert text to other formats and remove unneeded columns
+    if "lengthText" in data.columns:
+        data["length_minutes"] = data["lengthText"].apply(get_length_minutes)
+        data.drop(columns="lengthText", inplace=True)
+    if "publishedTimeText" in data.columns:
+        data["published_time"] = data["publishedTimeText"].apply(get_published_time)
+        data.drop(columns="publishedTimeText", inplace=True)
+    if "viewCountText" in data.columns:
+        data["views_millions"] = data["viewCountText"].apply(get_views_count)
+        data.drop(columns="viewCountText", inplace=True)
     return data
     
 def connect():
@@ -128,4 +132,3 @@ def lambda_handler(event, context):
     df_videos = extract_data()
     df_videos_clean = transform_data(df_videos)
     load_data(df_videos_clean)
-
